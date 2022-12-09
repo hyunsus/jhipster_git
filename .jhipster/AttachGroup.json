@@ -1,0 +1,43 @@
+{
+  "applications": "*",
+  "changelogDate": "20221209021229",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "attach_group",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "AttachGroup",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "post",
+      "ownerSide": true,
+      "relationshipName": "post",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "attach",
+      "otherEntityRelationshipName": "attachGroup",
+      "relationshipName": "attach",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceImpl"
+}

@@ -1,0 +1,166 @@
+/*
+Board: 게시시물을 그룹화 할 수 있는 게시판 정보
+Post: 게시물 정보
+AttachGroup: 게시물에 저장될 파일 그룹
+Attach: 게시판내 파일
+Comment: 게시물 커멘트 정보
+*/
+
+/*
+Board
+id: 게시판 아이디
+title: 게시판 이름
+category: 게시판 카테고리 코드
+createdAt: 생성일시
+createdBy: 생성자
+modifiedAt: 수정일시
+modifiedBy: 수정자
+*/
+entity Board {
+	id Long,
+	title String required,
+    category String required,
+    createdAt ZonedDateTime required,
+    createdBy String required,
+  	modifiedAt ZonedDateTime,
+    modifiedBy String
+}
+
+/*
+Post
+id: 게시물 아이디
+status: 게시물의 상태 (작성중, 오픈, 클로즈)
+title: 게시물 제목
+contents: 게시물 내용
+readCnt: 조회수
+goodCng: 좋아요 횟수
+badCnt: 싫어요 횟수
+createdAt: 생성일시
+createdBy: 생성자
+modifiedAt: 수정일시
+modifiedBy: 수정자
+*/
+entity Post {
+	id Long,
+    status String required,
+    title String required,
+    contents Blob,
+    readCnt Integer,
+    goodCnt Integer,
+    badCnt Integer,
+    createAt ZonedDateTime required,
+    createBy String required,
+    modifiedAt ZonedDateTime,
+    modifiedBy String
+}
+/*
+AttachGroup
+id: 게시물 첨부파일 그룹 아이디
+createdAt: 생성일시
+createdBy: 생성자
+*/
+entity AttachGroup {
+	id Long,
+    createdAt ZonedDateTime required,
+    createdBy String required
+}
+/*
+Attach
+id: 게시물 첨부파일 아이디
+ord: 첨부파일 정렬 순서
+name: 첨부파일 이름
+origName: 첨부파일 원본 파일 이름
+ext: 확장자
+contentType: 컨텐츠 타입
+path: 컨텐츠 파일 저장 경로
+fileSize: 컨텐츠 파일 크기
+createdAt: 생성일시
+createdBy: 생성자
+modifiedAt: 수정일시
+modifiedBy: 수정자
+*/
+entity Attach {
+	id Long,
+    org Integer,
+    name String,
+    origName String,
+    ext String,
+    contentType String,
+    path String,
+    fileSize Long,
+    createdAt ZonedDateTime required,
+    createdBy String required,
+    modifiedAt ZonedDateTime,
+    modifiedBy String
+}
+/*
+Comment
+id: 커멘트 아이디
+depth: 커멘트 뎁스
+comment: 커멘트 내용
+readCnt: 조회수
+goodCng: 좋아요 횟수
+badCnt: 싫어요 횟수
+createdAt: 생성일시
+createdBy: 생성자
+modifiedAt: 수정일시
+modifiedBy: 수정자
+*/
+entity Comment {
+	id Long,
+    depth Integer,
+	comment String,
+    readCnt Integer,
+    goodCnt Integer,
+    badCnt Integer,
+    createdAt ZonedDateTime required,
+    createdBy String required,
+    modifiedAt ZonedDateTime,
+    modifiedBy String 
+}
+
+/*
+OneToMany: 1:N 관계를 적용한다.
+Board{post} to Post: 이 의미는 Board 는 1에 해당하고, Post는 N에 해당된다. 그리고 Board에서는 post라는 변수로 N개의 Post를 가진다는 의미이다.
+AttachGroup{attach} to Attach: AttachGroup은 복수개의 Attach를 가진다.
+Comment{comment} to Comment{parent}: 이 의미는 1:N과계이며, Self Reference를 생성할 수 있도록 해준다. (즉, 답글에 답글을 달 수 있기 때문이다.)
+*/
+relationship OneToMany{
+	Board{post} to Post,
+    AttachGroup{attach} to Attach,
+    Comment{comment} to Comment{parent},
+}
+
+/*
+Post하나에 대해서 복수개의 Comment를 가진다.
+*/
+relationship ManyToOne{
+	Comment{post} to Post
+}
+
+/*
+1:1 연관을 매핑한다.
+AttachGroup 가 Post에 대한 레퍼런스를 가진다. 즉, Post가 있어야, AttachGroup를 만들 수 있다는 것을 구현할 수 있게 된다.
+*/
+relationship OneToOne {
+	AttachGroup{post} to Post
+}
+
+/*
+mapstruct 를 통해서 Entity와 DTO 매핑을 수행하겠다는 의미이다.
+*/
+dto * with mapstruct
+
+/*
+서비스를 생성할때 ServiceImpl 을 이용하여 구현하도록 한다.
+*/
+service all with serviceImpl
+
+/*
+페이징은 2가지를 제공한다.
+일반적인 페이징 (우리 예제는 일반적인 페이징 예시이다.)
+Board, Post, AttachGroup, Attach, Comment 엔터티는 페이징을 지원함을 의미한다.
+*/
+paginate Board, Post, AttachGroup, Attach, Comment with pagination
+
+

@@ -1,0 +1,76 @@
+{
+  "applications": "*",
+  "changelogDate": "20221209021231",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "comment",
+  "fields": [
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "depth",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "comment",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "readCnt",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "goodCnt",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "badCnt",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "createdAt",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "modifiedAt",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "modifiedBy",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Comment",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "parent",
+      "relationshipName": "comment",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "post",
+      "relationshipName": "post",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "comment",
+      "otherEntityRelationshipName": "comment",
+      "relationshipName": "parent",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceImpl"
+}
