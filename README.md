@@ -159,5 +159,5 @@ JHipster 실행 ($ jhipster)
 - 위와 같이 JHipster Marketplace 로 부터 다른 generator를 설치할 수 있다.
 
 ## 서버 실행하기
-./mvnw → 메이븐 실행 방법
-./gradlew → 그래들 실행 방법
+- ./mvnw → 메이븐 실행 방법
+- ./gradlew → 그래들 실행 방법
